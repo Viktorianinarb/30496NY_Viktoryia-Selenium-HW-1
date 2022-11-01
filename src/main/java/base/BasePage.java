@@ -38,6 +38,7 @@ public class BasePage {
     public static ExtentReports extent;
     public static JavascriptExecutor jsDriver;
 
+
     // region Hooks
     @BeforeSuite(alwaysRun = true)
     public void reportSetup(ITestContext context) {
@@ -65,7 +66,7 @@ public class BasePage {
         }
     }
 
-    @AfterMethod ()
+    @AfterMethod()
     public void cleanUp() {
         driver.close();
         driver.quit();
@@ -131,6 +132,13 @@ public class BasePage {
 
         fluentWait.until(ExpectedConditions.visibilityOf(element));
         actions.moveToElement(element).perform();
+    }
+
+    public void hoverOverElementAndClick(WebElement element) {
+        Actions actions = new Actions(driver);
+
+        fluentWait.until(ExpectedConditions.visibilityOf(element));
+        actions.click().moveToElement(element).perform();
     }
 
     public String getTrimmedElementText(WebElement element) {
@@ -300,6 +308,21 @@ public class BasePage {
         return calendar.getTime();
     }
 
+
+    public String getTextFromElement(WebElement element) {
+        String text = "";
+
+        fluentWait.until(ExpectedConditions.invisibilityOf(element));
+        text = element.getText();
+
+        if (text.equals("")) {
+            text = element.getAttribute("innerHTML");
+        }
+
+        return text;
+    }
+}
+
     // endregion
 
-}
+
